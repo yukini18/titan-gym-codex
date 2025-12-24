@@ -52,8 +52,8 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         titan: {
-          orange: "hsl(var(--titan-orange))",
           blue: "hsl(var(--titan-blue))",
+          cyan: "hsl(var(--titan-cyan))",
           dark: "hsl(var(--titan-dark))",
           card: "hsl(var(--titan-card))",
         },
