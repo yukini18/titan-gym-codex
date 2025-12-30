@@ -27,9 +27,9 @@ const recentExercises = [
 
 function StatsSection() {
   return (
-    <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+    <div className="grid grid-cols-2 gap-3">
       {stats.map((stat) => (
-        <Card key={stat.label} className="glass-card border-border/50 min-w-[140px] flex-shrink-0">
+        <Card key={stat.label} className="glass-card border-border/50">
           <CardContent className="p-4">
             <div className="flex items-start justify-between">
               <div>
