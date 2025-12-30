@@ -7,6 +7,8 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import Dashboard from "@/pages/Dashboard";
 import AICoach from "@/pages/AICoach";
 import Workouts from "@/pages/Workouts";
+import NewWorkout from "@/pages/NewWorkout";
+import WorkoutDetail from "@/pages/WorkoutDetail";
 import Exercises from "@/pages/Exercises";
 import Progress from "@/pages/Progress";
 import Settings from "@/pages/Settings";
@@ -25,6 +27,8 @@ const App = () => (
             <Route path="/" element={<Dashboard />} />
             <Route path="/coach" element={<AICoach />} />
             <Route path="/workouts" element={<Workouts />} />
+            <Route path="/workouts/new" element={<NewWorkout />} />
+            <Route path="/workouts/:id" element={<WorkoutDetail />} />
             <Route path="/exercises" element={<Exercises />} />
             <Route path="/progress" element={<Progress />} />
             <Route path="/settings" element={<Settings />} />

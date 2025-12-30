@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Plus, Play, Clock, Dumbbell, ChevronRight, Check } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -33,22 +34,26 @@ const typeColors: Record<string, string> = {
 };
 
 export default function Workouts() {
+  const navigate = useNavigate();
   const [selectedWorkout, setSelectedWorkout] = useState<string | null>(null);
 
   const scheduledWorkouts = workouts.filter(w => w.scheduled);
   const recentWorkouts = workouts.filter(w => w.lastCompleted);
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-4 md:p-8 space-y-6 md:space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-4xl tracking-wide text-foreground">
+          <h1 className="font-display text-2xl md:text-4xl tracking-wide text-foreground">
             YOUR <span className="text-primary titan-text-glow">WORKOUTS</span>
           </h1>
-          <p className="text-muted-foreground mt-1">Manage and track your training sessions</p>
+          <p className="text-muted-foreground text-sm mt-1">Manage and track your training sessions</p>
         </div>
-        <Button className="titan-gradient titan-glow text-primary-foreground font-semibold px-6">
+        <Button 
+          onClick={() => navigate("/workouts/new")}
+          className="titan-gradient titan-glow text-primary-foreground font-semibold px-6"
+        >
           <Plus className="w-4 h-4 mr-2" />
           New Workout
         </Button>
@@ -56,7 +61,7 @@ export default function Workouts() {
 
       {/* Scheduled Section */}
       <div>
-        <h2 className="font-display text-xl tracking-wide text-foreground mb-4 flex items-center gap-2">
+        <h2 className="font-display text-lg md:text-xl tracking-wide text-foreground mb-4 flex items-center gap-2">
           <Clock className="w-5 h-5 text-accent" />
           SCHEDULED
         </h2>
@@ -68,9 +73,9 @@ export default function Workouts() {
                 "glass-card border-border/50 cursor-pointer transition-all duration-200 hover:border-primary/50",
                 selectedWorkout === workout.id && "border-primary ring-1 ring-primary/20"
               )}
-              onClick={() => setSelectedWorkout(workout.id)}
+              onClick={() => navigate(`/workouts/${workout.id}`)}
             >
-              <CardContent className="p-5">
+              <CardContent className="p-4 md:p-5">
                 <div className="flex items-start justify-between mb-3">
                   <Badge className={cn("uppercase text-xs", typeColors[workout.type])}>
                     {workout.type}
@@ -79,8 +84,8 @@ export default function Workouts() {
                     {workout.scheduled}
                   </span>
                 </div>
-                <h3 className="font-semibold text-foreground mb-3">{workout.name}</h3>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <h3 className="font-semibold text-foreground mb-3 text-sm md:text-base">{workout.name}</h3>
+                <div className="flex items-center gap-4 text-xs md:text-sm text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Dumbbell className="w-4 h-4" />
                     {workout.exercises} exercises
@@ -90,7 +95,13 @@ export default function Workouts() {
                     {workout.duration}
                   </span>
                 </div>
-                <Button className="w-full mt-4 titan-gradient text-primary-foreground">
+                <Button 
+                  className="w-full mt-4 titan-gradient text-primary-foreground"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/workouts/${workout.id}`);
+                  }}
+                >
                   <Play className="w-4 h-4 mr-2" />
                   Start Workout
                 </Button>
@@ -102,7 +113,7 @@ export default function Workouts() {
 
       {/* Recent Section */}
       <div>
-        <h2 className="font-display text-xl tracking-wide text-foreground mb-4 flex items-center gap-2">
+        <h2 className="font-display text-lg md:text-xl tracking-wide text-foreground mb-4 flex items-center gap-2">
           <Check className="w-5 h-5 text-green-500" />
           RECENT WORKOUTS
         </h2>
@@ -111,24 +122,25 @@ export default function Workouts() {
             <Card 
               key={workout.id}
               className="glass-card border-border/50 cursor-pointer transition-all duration-200 hover:border-primary/30"
+              onClick={() => navigate(`/workouts/${workout.id}`)}
             >
-              <CardContent className="p-4 flex items-center justify-between">
+              <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-4">
                   <Badge className={cn("uppercase text-xs", typeColors[workout.type])}>
                     {workout.type}
                   </Badge>
                   <div>
-                    <h3 className="font-medium text-foreground">{workout.name}</h3>
-                    <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                    <h3 className="font-medium text-foreground text-sm md:text-base">{workout.name}</h3>
+                    <div className="flex flex-wrap items-center gap-2 md:gap-3 text-xs md:text-sm text-muted-foreground">
                       <span>{workout.exercises} exercises</span>
-                      <span>•</span>
+                      <span className="hidden sm:inline">•</span>
                       <span>{workout.duration}</span>
-                      <span>•</span>
+                      <span className="hidden sm:inline">•</span>
                       <span>Completed {workout.lastCompleted}</span>
                     </div>
                   </div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                <ChevronRight className="w-5 h-5 text-muted-foreground hidden sm:block" />
               </CardContent>
             </Card>
           ))}
@@ -136,23 +148,23 @@ export default function Workouts() {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card className="glass-card border-border/50">
-          <CardContent className="p-6 text-center">
-            <p className="text-4xl font-bold text-primary">24</p>
-            <p className="text-sm text-muted-foreground mt-1">Workouts This Month</p>
+          <CardContent className="p-4 md:p-6 text-center">
+            <p className="text-3xl md:text-4xl font-bold text-primary">24</p>
+            <p className="text-xs md:text-sm text-muted-foreground mt-1">Workouts This Month</p>
           </CardContent>
         </Card>
         <Card className="glass-card border-border/50">
-          <CardContent className="p-6 text-center">
-            <p className="text-4xl font-bold text-accent">18.5</p>
-            <p className="text-sm text-muted-foreground mt-1">Hours Trained</p>
+          <CardContent className="p-4 md:p-6 text-center">
+            <p className="text-3xl md:text-4xl font-bold text-accent">18.5</p>
+            <p className="text-xs md:text-sm text-muted-foreground mt-1">Hours Trained</p>
           </CardContent>
         </Card>
         <Card className="glass-card border-border/50">
-          <CardContent className="p-6 text-center">
-            <p className="text-4xl font-bold text-green-500">96%</p>
-            <p className="text-sm text-muted-foreground mt-1">Completion Rate</p>
+          <CardContent className="p-4 md:p-6 text-center">
+            <p className="text-3xl md:text-4xl font-bold text-green-500">96%</p>
+            <p className="text-xs md:text-sm text-muted-foreground mt-1">Completion Rate</p>
           </CardContent>
         </Card>
       </div>
