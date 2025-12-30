@@ -18,11 +18,21 @@ const navItems = [
   { to: "/progress", icon: BarChart3, label: "Progress" },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  onNavigate?: () => void;
+}
+
+export function Sidebar({ onNavigate }: SidebarProps) {
   const location = useLocation();
 
+  const handleClick = () => {
+    if (onNavigate) {
+      onNavigate();
+    }
+  };
+
   return (
-    <aside className="w-64 border-r border-border bg-sidebar flex flex-col">
+    <aside className="w-64 border-r border-border bg-sidebar flex flex-col h-full">
       {/* Logo */}
       <div className="p-6 border-b border-border">
         <div className="flex items-center gap-3">
@@ -44,6 +54,7 @@ export function Sidebar() {
             <NavLink
               key={item.to}
               to={item.to}
+              onClick={handleClick}
               className={cn(
                 "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
                 "hover:bg-secondary/50",
@@ -69,6 +80,7 @@ export function Sidebar() {
       <div className="p-4 border-t border-border">
         <NavLink
           to="/settings"
+          onClick={handleClick}
           className="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-secondary/50 text-muted-foreground"
         >
           <Settings className="w-5 h-5" />
