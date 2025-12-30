@@ -25,7 +25,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             <Button
               variant="ghost"
               size="icon"
-              className="fixed top-4 left-4 z-50 bg-background/80 backdrop-blur-sm border border-border"
+              className="fixed top-6 left-4 z-50 bg-background/80 backdrop-blur-sm border border-border"
             >
               <Menu className="h-5 w-5" />
             </Button>
